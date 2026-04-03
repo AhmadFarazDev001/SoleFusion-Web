@@ -194,12 +194,21 @@ export const Hero = ({ currentShoe, onNext, onPrev, scrollContainerRef }: { curr
     setIsAdded(true);
     setAnimatingParcel(true);
 
-    // Schedule the kick sound synchronously using Web Audio API to bypass mobile autoplay blocks
+    // Schedule the kick sound synchronously using Web Audio API
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       if (AudioContextClass) {
-        const ctx = new AudioContextClass();
-        if (ctx.state === 'suspended') ctx.resume();
+        // Use a global singleton attached to window to prevent hardware slot exhaustion
+        if (!(window as any).__globalAudioCtx) {
+          (window as any).__globalAudioCtx = new AudioContextClass();
+        }
+        const ctx = (window as any).__globalAudioCtx;
+        
+        // Critical for iOS Safari: must resume explicitly during the click handler
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+        
         const startTime = ctx.currentTime + 0.5; // Exactly aligned with the "impact" label
 
         const osc = ctx.createOscillator();
