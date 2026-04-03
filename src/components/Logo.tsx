@@ -1,0 +1,29 @@
+import React from 'react';
+
+export const Logo = ({ onClick }: { onClick?: () => void }) => {
+  return (
+    <div className="flex items-center gap-3 cursor-pointer" onClick={onClick}>
+      {/* Custom V-shaped mark with blue/orange gradient */}
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#7ED6FF" />
+            <stop offset="100%" stopColor="#FF7C32" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M4 8L16 24L28 8L22 8L16 16L10 8L4 8Z"
+          fill="url(#logo-gradient)"
+        />
+        <path
+          d="M10 4L16 12L22 4L16 4L10 4Z"
+          fill="#FF7C32"
+          opacity="0.8"
+        />
+      </svg>
+      <span className="font-montserrat font-bold text-white tracking-widest text-xl uppercase">
+        SoleFusion
+      </span>
+    </div>
+  );
+};
